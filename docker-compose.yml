@@ -1,0 +1,73 @@
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: ms_mongo
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - micro-net
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: ms_rabbitmq
+    ports:
+      - "15672:15672" # management panel
+    networks:
+      - micro-net
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - user-service
+      - product-service
+      - order-service
+    networks:
+      - micro-net
+
+  user-service:
+    build: ./user-service
+    expose:
+      - "3101"
+    environment:
+      - PORT=3101
+      - MONGO_URL=mongodb://mongo:27017/userdb
+    depends_on:
+      - mongo
+    networks:
+      - micro-net
+
+  product-service:
+    build: ./product-service
+    expose:
+      - "3102"
+    environment:
+      - PORT=3102
+      - MONGO_URL=mongodb://mongo:27017/productdb
+    depends_on:
+      - mongo
+    networks:
+      - micro-net
+
+  order-service:
+    build: ./order-service
+    expose:
+      - "3103"
+    environment:
+      - PORT=3103
+      - MONGO_URL=mongodb://mongo:27017/orderdb
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - PRODUCT_SERVICE_URL=http://product-service:3102
+    depends_on:
+      - mongo
+      - rabbitmq
+    networks:
+      - micro-net
+
+volumes:
+  mongo_data:
+
+networks:
+  micro-net:
+    driver: bridge
