@@ -180,8 +180,8 @@ Open in browser: [http://localhost:15672](http://localhost:15672)
 
 **Ravshanbek Mirzajalilov**  
 💼 Full Stack Developer — Node.js | Vue.js | PostgreSQL  
-📧 your.email@example.com  
-🌍 [LinkedIn](https://linkedin.com/in/your-profile)
+📧 mirzajalilovravshanbek@gmail.com  
+🌍 [LinkedIn](https://www.linkedin.com/in/ravshanbek-mirzajalilov/)
 
 ---
 
